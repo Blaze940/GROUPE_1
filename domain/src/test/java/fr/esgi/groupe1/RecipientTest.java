@@ -7,12 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 class RecipientTest {
 
     @Test
-    void should_throw_recipient_is_empty_execption_when_the_recipient_is_empty() {
-        // GIVEN
-        Recipient recipient = new Recipient(0);
-
-        // WHEN & THEN
-        assertThrowsExactly(RecipientIsEmptyExecption.class, recipient::isFill);
+    void should_throw_recipient_is_empty_exception_when_the_recipient_is_instantiate_with_negative_value() {
+        assertThrowsExactly(RecipientIsEmptyExecption.class, () -> new Recipient(-1));
     }
 
 }

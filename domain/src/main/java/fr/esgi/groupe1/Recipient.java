@@ -6,14 +6,13 @@ public class Recipient {
     private final double currentLevel;
 
     public Recipient(double currentLevel) {
+        if (currentLevel < 0) {
+            throw new RecipientIsEmptyExecption();
+        }
         this.currentLevel = currentLevel;
     }
 
     public boolean isFill() {
-        if (currentLevel == 0) {
-            throw new RecipientIsEmptyExecption();
-        }
-
         return currentLevel >= MIN_THREESHOLD;
     }
 }
