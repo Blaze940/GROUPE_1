@@ -1,6 +1,7 @@
 package fr.esgi.groupe1;
 
 public class Recipient {
+
     private static final double MIN_THREESHOLD = 0.05;
     private final double currentLevel;
 
@@ -9,9 +10,10 @@ public class Recipient {
     }
 
     public boolean isFill() {
-        if (currentLevel <= MIN_THREESHOLD) {
-            return false;
+        if (currentLevel == 0) {
+            throw new RecipientIsEmptyExecption();
         }
-        return true;
+
+        return currentLevel >= MIN_THREESHOLD;
     }
 }
