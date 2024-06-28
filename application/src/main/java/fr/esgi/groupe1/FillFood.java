@@ -15,11 +15,11 @@ public class FillFood {
     public void fill() {
         var recipientList = recipients.findAll();
         Food food = foods.find();
+        Karcher karcher = Karcher.getINSTANCE();
 
         var recipientsToClean =
                 recipientList.stream().filter(recipient -> !recipient.isCleaned()).toList();
 
-        Karcher karcher = Karcher.getINSTANCE();
         var recipientsCleaned = recipientsToClean.stream().map(karcher::cleanRecipient).toList();
 
         recipientsCleaned.forEach(
