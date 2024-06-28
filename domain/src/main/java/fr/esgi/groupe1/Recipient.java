@@ -1,82 +1,86 @@
 package fr.esgi.groupe1;
 
 import fr.esgi.groupe1.exception.NegativeLevelException;
-import fr.esgi.groupe1.exception.NegativeWeightException;
+
+import java.util.Objects;
 
 public class Recipient {
-    private final static  double MIN_THREESHOLD_lIQUID = 0.05;
-    private final static double MIN_THREESHOLD_SOLID = 0.1;
-    private RecipientId recipientId;
-    private double currentLevel;
-    private Nourriture nourriture;
-    private double poids;
+    private final static double MIN_THRESHOLD_LIQUID = 0.05;
+    private final static double MIN_THRESHOLD_SOLID = 0.1;
+    private final static double MAX_THRESHOLD_LIQUID = 0.9;
+    private final static double MAX_THRESHOLD_SOLID = 1;
 
-    public Recipient(double currentLevel, double poids, Nourriture nourriture, RecipientId recipientId) {
+    private RecipientId recipientId;
+    private Food food;
+    private double currentLevel;
+    private boolean isCleaned;
+
+    public Recipient(double currentLevel, Food food, RecipientId recipientId) {
         if (currentLevel < 0) {
             throw new NegativeLevelException();
         }
-        if (poids < 0) {
-            throw new NegativeWeightException();
-        }
 
-        this.poids = poids;
         this.currentLevel = currentLevel;
-        this.nourriture = nourriture;
+        this.food = food;
         this.recipientId = recipientId;
+        this.isCleaned = false;
     }
+
     public void drain() {
         this.currentLevel = 0;
-        this.poids = 0;
-        this.nourriture = null;
+        this.food = null;
     }
 
     public boolean isFilled() {
-        if(hasNoAliment()) {
+        if (hasNoAliment()) {
             return false;
         }
-        if(alimentIsLiquid()){
-            return currentLevel >= MIN_THREESHOLD_lIQUID;
+        if (alimentIsLiquid()) {
+            return currentLevel >= MIN_THRESHOLD_LIQUID;
         }
-        return currentLevel >= MIN_THREESHOLD_SOLID;
+        return currentLevel >= MIN_THRESHOLD_SOLID;
     }
 
-    public boolean alimentIsLiquid() { return nourriture.isLiquid();}
+    public void fill(Food food) {
+        if (isFilled()) {
+            return;
+        }
+        this.food = food;
+        if (alimentIsLiquid()) {
+            currentLevel = MAX_THRESHOLD_LIQUID;
+        } else {
+            currentLevel = MAX_THRESHOLD_SOLID;
+        }
+    }
+
+    public boolean alimentIsLiquid() {
+        return food.isLiquid();
+    }
 
     public boolean hasNoAliment() {
-        return nourriture == null;
+        return food == null;
     }
 
-    public RecipientId getRecipientId() {
-        return recipientId;
+    public void clean() {
+        this.isCleaned = true;
     }
 
-    private void setRecipientId(RecipientId recipientId) {
-        this.recipientId = recipientId;
+    public boolean isCleaned() {
+        return isCleaned;
     }
 
-    public double getCurrentLevel() {
-        return currentLevel;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Recipient recipient = (Recipient) o;
+
+        return Objects.equals(recipientId, recipient.recipientId);
     }
 
-    private void setCurrentLevel(double currentLevel) {
-        this.currentLevel = currentLevel;
+    @Override
+    public int hashCode() {
+        return recipientId != null ? recipientId.hashCode() : 0;
     }
-
-    public Nourriture getNourriture() {
-        return nourriture;
-    }
-
-    public void setNourriture(Nourriture nourriture) {
-        this.nourriture = nourriture;
-    }
-
-    public double getPoids() {
-        return poids;
-    }
-
-    private void setPoids(double poids) {
-        this.poids = poids;
-    }
-
-
 }

@@ -3,36 +3,24 @@ package fr.esgi.groupe1;
 import fr.esgi.groupe1.exception.NoRecipientToClean;
 
 public class Karcher {
-    //Singleton
-    private static Karcher instance = null;
+    private static Karcher INSTANCE;
 
     private Karcher() {
     }
 
-    public static Karcher getInstance() {
-        if(instance == null) {
-            instance = new Karcher();
+    public static Karcher getINSTANCE() {
+        if (INSTANCE == null) {
+            INSTANCE = new Karcher();
         }
-        return instance;
+        return INSTANCE;
     }
 
-    //pattern : Command
-
-
-    public static void cleanRecipient(Recipient recipient) {
-        if(recipient == null) {
+    public Recipient cleanRecipient(Recipient recipient) {
+        if (recipient == null) {
             throw new NoRecipientToClean();
         }
-            recipient.drain();
-            washWater(recipient);
+        recipient.drain();
+        recipient.clean();
+        return recipient;
     }
-
-    private static void washWater(Recipient recipient) {
-        //System.out.println("Test Washing water");
-    }
-
-    public static void setInstance(Karcher karcher) {
-        instance = karcher;
-    }
-
 }

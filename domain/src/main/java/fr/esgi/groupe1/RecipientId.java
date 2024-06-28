@@ -4,14 +4,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class RecipientId {
+
     private final UUID value;
 
-    public RecipientId(UUID value) {
-        this.value = Objects.requireNonNull(value);
-    }
-
-    public UUID getValue() {
-        return value;
+    public RecipientId() {
+        this.value = UUID.randomUUID();
     }
 
     @Override
