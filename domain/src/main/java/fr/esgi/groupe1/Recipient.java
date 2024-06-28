@@ -1,5 +1,7 @@
 package fr.esgi.groupe1;
 
+import fr.esgi.groupe1.exception.CannotCleanAlreadyCleanedRecipientException;
+import fr.esgi.groupe1.exception.CannotCleanFilledRecipientException;
 import fr.esgi.groupe1.exception.NegativeLevelException;
 
 import java.util.Objects;
@@ -62,11 +64,22 @@ public class Recipient {
     }
 
     public void clean() {
+        if (isFilled()) {
+            throw new CannotCleanFilledRecipientException();
+        }
+        if (this.isCleaned) {
+            throw new CannotCleanAlreadyCleanedRecipientException();
+        }
+
         this.isCleaned = true;
     }
 
     public boolean isCleaned() {
         return isCleaned;
+    }
+
+    public double getCurrentLevel() {
+        return currentLevel;
     }
 
     @Override
