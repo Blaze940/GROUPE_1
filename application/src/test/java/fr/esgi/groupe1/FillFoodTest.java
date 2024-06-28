@@ -3,40 +3,35 @@ package fr.esgi.groupe1;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 class FillFoodTest {
 
-    private FillFood fillFood;
     private FakeFoods fakeFoods;
 
     private FakeRecipients fakeRecipients;
 
+    private FillFood fillFood;
+
     @BeforeEach
     void setUp() {
-        fakeFoods = new FakeFoods();
-        fakeRecipients = new FakeRecipients();
+        fakeFoods = mock(FakeFoods.class);
+        fakeRecipients = mock(FakeRecipients.class);
         fillFood = new FillFood(fakeRecipients, fakeFoods);
     }
 
-
     @Test
     void should_fill_recipients_with_food() {
-        // GIVEN
-        List<Recipient> recipientList = fakeRecipients.findAll();
-
         // WHEN
         fillFood.fill();
 
-
-        for (Recipient recipient : recipientList) {
-            assertFalse(recipient.isFilled());
+        for (Recipient recipient : fakeRecipients.findAll()) {
+            // THEN
+            assertTrue(recipient.isFilled());
         }
     }
 }

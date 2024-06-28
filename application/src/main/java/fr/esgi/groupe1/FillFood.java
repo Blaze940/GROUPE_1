@@ -11,23 +11,19 @@ public class FillFood {
         this.recipients = recipients;
         this.foods = foods;
     }
-
-    public List<Recipient> fill() {
+    public void fill() {
         var recipientList = recipients.findAll();
-
         var recipientsToClean =
                 recipientList.stream().filter(recipient -> !recipient.isCleaned()).toList();
+        Food food = foods.find();
 
         Karcher karcher = Karcher.getINSTANCE();
         var recipientsCleaned = recipientsToClean.stream().map(karcher::cleanRecipient).toList();
-
-        Food food = foods.find();
 
         recipientsCleaned.forEach(
                 recipient -> {
                     recipient.fill(food);
                 }
         );
-        return recipientsCleaned;
     }
 }
